@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "vendor": "node scripts/copy-vendor.js",
+    "tauri": "tauri",
     "dev": "tauri dev",
     "build": "tauri build"
   },

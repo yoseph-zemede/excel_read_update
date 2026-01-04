@@ -46,7 +46,7 @@ jobs:
         run: npm ci
 
       - name: Build Tauri app
-        run: npm run tauri build
+        run: npm run tauri -- build
 
       - name: Upload Windows installer (.exe)
         uses: actions/upload-artifact@v4
