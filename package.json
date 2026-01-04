@@ -1,0 +1,27 @@
+{
+  "name": "asset-analyzer",
+  "version": "1.0.0",
+  "description": "Professional financial data analysis with seasonal insights",
+  "main": "main.js",
+  "scripts": {
+    "vendor": "node scripts/copy-vendor.js",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "keywords": [
+    "electron",
+    "financial",
+    "analysis"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "plotly.js-dist-min": "^2.30.1",
+    "sql.js": "^1.13.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  },
+  "build": {}
+}

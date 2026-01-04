@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asset Analyzer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="tauri_bridge.js"></script>
+    <script defer src="vendor/plotly.min.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="header-content">
+          <h1 class="app-title">Asset Analyzer</h1>
+          <p class="app-subtitle">
+            Financial data analysis with seasonal insights
+          </p>
+          <div class="header-actions">
+            <button
+              id="theme-toggle"
+              class="btn btn-outline"
+              title="Toggle theme"
+            >
+              🌙 Dark Mode
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <nav class="app-nav">
+        <button class="nav-item active" data-tab="upload">
+          <span class="nav-icon">📥</span>
+          <span class="nav-label">Upload</span>
+        </button>
+        <button class="nav-item" data-tab="analysis">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Analysis</span>
+        </button>
+        <button class="nav-item" data-tab="graphs">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Graphs</span>
+        </button>
+        <button class="nav-item" data-tab="posneg">
+          <span class="nav-icon">➕➖</span>
+          <span class="nav-label">Positive/Negative</span>
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </button>
+      </nav>
+
+      <main class="app-main">
+        <!-- Upload Tab -->
+        <section id="upload-tab" class="tab-panel active">
+          <div class="panel-header">
+            <h2>Upload Data</h2>
+            <p>Import your Excel file to begin analysis</p>
+          </div>
+
+          <div class="upload-card">
+            <div class="upload-area" id="upload-zone">
+              <div class="upload-icon">📁</div>
+              <h3>Drop your Excel file here</h3>
+              <p>or click to browse</p>
+              <input
+                type="file"
+                id="file-input"
+                accept=".xlsx,.xls"
+                style="display: none"
+              />
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="form-group">
+              <label for="asset-name">Asset Name</label>
+              <input
+                type="text"
+                id="asset-name"
+                placeholder="Enter asset name"
+              />
+            </div>
+            <div class="form-group checkbox-group">
+              <label>
+                <input type="checkbox" id="replace-nan" checked />
+                <span>Replace NaN with 0</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="upload-results"></div>
+        </section>
+
+        <!-- Analysis Tab -->
+        <section id="analysis-tab" class="tab-panel">
+          <div class="panel-header">
+            <h2>Data Analysis</h2>
+            <p>View and analyze your financial data</p>
+          </div>
+          <div id="analysis-content">
+            <div class="empty-state">
+              <div class="empty-icon">📊</div>
+              <p>Loading database...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Graphs Tab -->
+        <section id="graphs-tab" class="tab-panel">
+          <div class="panel-header">
+            <h2>Visualizations</h2>
+            <p>View yearly data by month</p>
+          </div>
+
+          <div class="controls-card">
+            <div class="controls-grid">
+              <div class="control-item">
+                <label>Asset</label>
+                <select id="graph-asset"></select>
+              </div>
+              <div class="control-item">
+                <label>Year</label>
+                <select id="graph-year"></select>
+              </div>
+              <div class="control-item">
+                <label>Data Type</label>
+                <select id="graph-type">
+                  <option value="normalized">Normalized Data</option>
+                  <option value="True_Seasonal">True Seasonal Data</option>
+                </select>
+              </div>
+            </div>
+            <div class="controls-options">
+              <label class="checkbox-label">
+                <input type="checkbox" id="show-points" checked />
+                <span>Show Points</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="show-average" checked />
+                <span>Show Average</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="smooth-line" checked />
+                <span>Smooth Line</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div id="graph-container">
+              <div class="empty-state">
+                <div class="empty-icon">📈</div>
+                <p>Select an asset to view graphs</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="graph-stats" class="hidden"></div>
+        </section>
+
+        <!-- Positive/Negative Tab -->
+        <section id="posneg-tab" class="tab-panel">
+          <div class="panel-header">
+            <h2>Positive / Negative</h2>
+            <p>Monthly percent of positive vs negative %change</p>
+          </div>
+
+          <div class="controls-card">
+            <div class="controls-grid">
+              <div class="control-item">
+                <label>Asset</label>
+                <select id="posneg-asset"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card table-container" style="min-height: auto; padding: 0; overflow-x: auto;">
+            <div id="posneg-table-container">
+              <div class="empty-state">
+                <div class="empty-icon">➕➖</div>
+                <p>Select an asset to view monthly percentages</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Tab -->
+        <section id="settings-tab" class="tab-panel">
+          <div class="panel-header">
+            <h2>Settings</h2>
+            <p>Manage your database and preferences</p>
+          </div>
+
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>Database</h3>
+              <p class="settings-desc">Location: <code>asset_data.db</code></p>
+              <div id="db-size" class="settings-info"></div>
+              <button class="btn btn-outline" id="backup-btn">
+                Create Backup
+              </button>
+            </div>
+            <div class="settings-card">
+              <h3>Maintenance</h3>
+              <p class="settings-desc">Clear all stored data</p>
+              <button class="btn btn-danger" id="clear-btn">
+                Clear All Data
+              </button>
+              <div id="clear-confirm" class="hidden">
+                <p class="warning-text">⚠️ This action cannot be undone!</p>
+                <button class="btn btn-primary" id="confirm-clear">
+                  Confirm Delete
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-card">
+            <h3>About</h3>
+            <p>
+              Asset Analyzer is a professional tool for financial data analysis
+              with seasonal pattern detection.
+            </p>
+            <div class="features-list">
+              <div class="feature-item">📥 Excel file upload</div>
+              <div class="feature-item">📊 Automatic calculations</div>
+              <div class="feature-item">📈 Advanced graphing</div>
+              <div class="feature-item">💾 Local database storage</div>
+            </div>
+            <p class="requirements">
+              Requires Excel files with Date, Open, High, Low, Close columns.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>

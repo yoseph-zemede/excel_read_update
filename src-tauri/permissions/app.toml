@@ -1,0 +1,82 @@
+# App permissions for custom commands.
+# These are used by Tauri v2 ACL/capabilities resolution.
+
+[[permission]]
+identifier = "show-open-dialog"
+description = "Allow showing open file dialog"
+commands.allow = ["show_open_dialog"]
+
+[[permission]]
+identifier = "show-save-dialog"
+description = "Allow showing save file dialog"
+commands.allow = ["show_save_dialog"]
+
+[[permission]]
+identifier = "read-excel-file"
+description = "Allow reading an Excel file from disk"
+commands.allow = ["read_excel_file"]
+
+[[permission]]
+identifier = "read-excel-buffer"
+description = "Allow reading an Excel buffer"
+commands.allow = ["read_excel_buffer"]
+
+[[permission]]
+identifier = "process-data"
+description = "Allow processing imported data"
+commands.allow = ["process_data"]
+
+[[permission]]
+identifier = "save-to-database"
+description = "Allow persisting processed data to SQLite"
+commands.allow = ["save_to_database"]
+
+[[permission]]
+identifier = "get-assets"
+description = "Allow listing stored assets"
+commands.allow = ["get_assets"]
+
+[[permission]]
+identifier = "get-asset-data"
+description = "Allow fetching stored asset data"
+commands.allow = ["get_asset_data"]
+
+[[permission]]
+identifier = "get-database-stats"
+description = "Allow fetching database statistics"
+commands.allow = ["get_database_stats"]
+
+[[permission]]
+identifier = "get-asset-date-range"
+description = "Allow fetching an asset date range"
+commands.allow = ["get_asset_date_range"]
+
+[[permission]]
+identifier = "add-row"
+description = "Allow adding a row and recalculating derived columns"
+commands.allow = ["add_row"]
+
+[[permission]]
+identifier = "update-row"
+description = "Allow updating a row and recalculating derived columns"
+commands.allow = ["update_row"]
+
+[[permission]]
+identifier = "delete-row"
+description = "Allow deleting a row and recalculating derived columns"
+commands.allow = ["delete_row"]
+
+[[permission]]
+identifier = "clear-database"
+description = "Allow clearing the database"
+commands.allow = ["clear_database"]
+
+[[permission]]
+identifier = "export-excel"
+description = "Allow exporting data to an Excel file"
+commands.allow = ["export_excel"]
+
+[[permission]]
+identifier = "read-file"
+description = "Allow reading a file"
+commands.allow = ["read_file"]

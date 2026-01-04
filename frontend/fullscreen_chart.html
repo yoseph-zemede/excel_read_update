@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fullscreen Chart</title>
+    <script src="tauri_bridge.js"></script>
+    <script defer src="vendor/plotly.min.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      .chart-root {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #ffffff;
+      }
+      .toolbar .title {
+        font-weight: 600;
+        color: #111827;
+      }
+      .toolbar .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .toolbar button {
+        border: 1px solid #d1d5db;
+        background: #fff;
+        color: #374151;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .toolbar button:hover {
+        background: #f9fafb;
+      }
+      #chart {
+        flex: 1;
+        width: 100%;
+      }
+      .error-message {
+        padding: 20px;
+        color: #b91c1c;
+      }
+
+      /* Dark theme */
+      .dark .toolbar {
+        border-bottom-color: #1f2937;
+        background: #121212;
+      }
+      .dark .toolbar .title {
+        color: #e5e7eb;
+      }
+      .dark .toolbar button {
+        border-color: #374151;
+        background: #0b0b0b;
+        color: #e5e7eb;
+      }
+      .dark .toolbar button:hover {
+        background: #111827;
+      }
+      .dark .actions select { border-color: #374151; background: #0b0b0b; color: #e5e7eb; }
+    </style>
+  </head>
+  <body>
+    <div class="chart-root">
+      <div class="toolbar">
+        <div class="title" id="chart-title">Chart</div>
+        <div class="actions">
+          <label style="display: none; align-items:center; gap:6px;" id="asset-label">
+            <span style="margin-right: 6px; color: inherit">Asset</span>
+            <select id="asset-select" style="padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #374151;"></select>
+          </label>
+          <label style="display: none; align-items:center; gap:6px;" id="year-label">
+            <span style="margin-right: 6px; color: inherit">Year</span>
+            <select id="year-select" style="padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #374151;"></select>
+          </label>
+          <label style="display: none" id="datatype-label">
+            <span style="margin-right: 6px; color: inherit">Data Type</span>
+            <select
+              id="datatype-select"
+              style="
+                padding: 6px 10px;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                background: #fff;
+                color: #374151;
+              "
+            >
+              <option value="normalized">Normalized</option>
+              <option value="True_Seasonal">True Seasonal</option>
+            </select>
+          </label>
+          <button id="theme-toggle-fullscreen" title="Toggle theme">
+            🌙 Dark
+          </button>
+          <button id="back-btn">Back</button>
+        </div>
+      </div>
+      <div id="chart"></div>
+    </div>
+    <script src="fullscreen_chart.js"></script>
+  </body>
+</html>

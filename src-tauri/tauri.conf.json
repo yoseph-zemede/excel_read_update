@@ -1,0 +1,59 @@
+{
+  "productName": "Asset Analyzer",
+  "version": "1.0.0",
+  "identifier": "com.assetanalyzer.app",
+  "build": {
+    "beforeDevCommand": "npm run vendor",
+    "beforeBuildCommand": "npm run vendor",
+    "devUrl": null,
+    "frontendDist": "../frontend"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "security": {
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "main",
+          "description": "Main window IPC permissions",
+          "windows": ["main"],
+          "permissions": [
+            "core:default",
+
+            "show-open-dialog",
+            "show-save-dialog",
+            "read-excel-file",
+            "read-excel-buffer",
+            "process-data",
+            "save-to-database",
+            "get-assets",
+            "get-asset-data",
+            "get-database-stats",
+            "get-asset-date-range",
+            "add-row",
+            "update-row",
+            "delete-row",
+            "clear-database",
+            "export-excel",
+            "read-file"
+          ]
+        }
+      ]
+    },
+    "windows": [
+      {
+        "label": "main",
+        "title": "Asset Analyzer",
+        "width": 1400,
+        "height": 900,
+        "resizable": true
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "icon": [
+      "../asset/icon.png"
+    ]
+  }
+}
